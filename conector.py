@@ -21,6 +21,9 @@ class Conector:
         self.cursor = None
 
     def conectar(self):
+        """
+        Vamos a conectar a la BD
+        """
         try:
             if Conector.motor == "mariadb" or Conector.motor == "mysql":
                 self.conex = mysql.connector.connect(host = self.host, port = self.port, user = self.user, password = self.passw, database = self.db)
@@ -34,6 +37,7 @@ class Conector:
             self.__estado = True
             self.cursor = self.conex.cursor()
             print("Conectado!!")
+
         except Exception as e:
             self.__estado = False
             print(f"Error conectando: {e}")

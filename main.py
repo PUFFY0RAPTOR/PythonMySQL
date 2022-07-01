@@ -1,15 +1,18 @@
 from dml import DML
 
 if __name__ == "__main__":
-    conex = DML("localhost", "3307", "root", "", "pruebaDB")
+    conex = DML("localhost", "3306", "root", "", "pruebaDB")
 
 
-    resultado = conex.insertar("categoria", idcategoria = 4, nombre = "nueva")
-    print(resultado)
+    #resultado = conex.insertar("categoria", idcategoria = 2, nombre = "Nueva")
+    #print(resultado)
     
-    resultado = conex.insertar("producto", nombre = "Revista", descripcion = "Revistas nueva", precio = 15000,  categoria_idcategoria = 4)
-    print(resultado)
+    #resultado = conex.insertar("producto", nombre = "Revista", descripcion = "Revistas nueva", precio = 15000,  categoria_idcategoria = 4)
+    #print(resultado)
     
+    resultado = conex.eliminar("producto", idproductos = 3)
+    print(resultado)
+
     """resultado = conex.consultar("categoria")
     #SELECT * FROM categoria;
     if resultado:

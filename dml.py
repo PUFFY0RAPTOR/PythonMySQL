@@ -2,13 +2,16 @@ from conector import Conector
 
 class DML(Conector):
 
+    def __init__(self, host="localhost", port="3306", user="SebastianPertuzG", passw="sebas1001821018", db="pruebaDB"):
+        Conector.__init__(self, host, port, user, passw, db)
+
     def consultar(self, tabla, **kwargs):
         """tabla -> string obligatorio: nombre de la tabla como primer argumento.\n
         [] -> Otros argumentos: deben ir en forma de 'clave = valor'
         """
-        conex.conectar()
-        
-        if conex.estado():
+        self.conectar()
+    
+        if self.estado():
             try:
                 sql = "SELECT * FROM %s" % (tabla,)
 
@@ -30,14 +33,14 @@ class DML(Conector):
             except Exception as e:
                 print(f"Ocurrió un errror: {e}\n--------SQL: {self.cursor._executed} ----------")
             
-            conex.desconectar()
+            self.desconectar()
         else:
             print(f"Lo siento se perdió la comunicación con *** {Conector.motor}")
             
     def insertar(self, tabla, **kwargs):
-        conex.conectar()
+        self.conectar()
         
-        if conex.estado():
+        if self.estado():
             try:
                 sql = "INSERT INTO %s " % (tabla,)
                 
@@ -62,15 +65,42 @@ class DML(Conector):
                 print(sql)
 
                 self.cursor.execute(sql)
-                conex.commit()
+                self.commit()
                 return "OK"
             
             except Exception as e:
                 print(f"Ocurrió un errror: {e}\n--------SQL: {self.cursor._executed} ----------")
             
-            conex.desconectar()
+            self.desconectar()
         else:
             print(f"Lo siento se perdió la comunicación con *** {Conector.motor}")
+        
+    def eliminar(self, tabla, **kwargs):
+        self.conectar() 
+
+        try:
+            sql = "DELETE FROM %s" % (tabla,)
+
+            i = 0
+            for key, value in kwargs.items():
+                if i == 0:
+                    sql += " WHERE "
+                else:
+                    pass
+                i += 1
+
+            sql += str(key) + " = " + str(value)
+            
+            sql += ";"
+            self.cursor.execute(sql)
+            self.commit()
+            return "Si pude eliminar <3"
+
+        except Exception:
+            print(sql)
+            print("No pude eliminar...")
+
+
 
 if __name__ == "__main__":
     print("Soy la clase DML")
