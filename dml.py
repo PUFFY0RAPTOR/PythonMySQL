@@ -78,28 +78,31 @@ class DML(Conector):
     def eliminar(self, tabla, **kwargs):
         self.conectar() 
 
-        try:
-            sql = "DELETE FROM %s" % (tabla,)
-
-            i = 0
-            for key, value in kwargs.items():
-                if i == 0:
-                    sql += " WHERE "
-                else:
-                    pass
-                i += 1
-
-            sql += str(key) + " = " + str(value)
-            
-            sql += ";"
-            self.cursor.execute(sql)
-            self.commit()
-            return "Si pude eliminar <3"
-
-        except Exception:
-            print(sql)
-            print("No pude eliminar...")
-
+        if self.estado():
+            try:
+                sql = "DELETE FROM %s" % (tabla,)
+                #DELETE FROM producto WHERE idProducto == 2 OR idProducto == 3; 
+                i = 0
+                for key, value in kwargs.items():
+                    if i == 0:
+                        sql += " WHERE "
+                    else:
+                        sql += " AND "
+                    #sql += str(key) + " = '" + str(value) + "'"
+                    sql += f"{key} = '{value}'"
+                    i += 1
+                
+                sql += ";"
+                self.cursor.execute(sql)
+                self.commit()
+                return "Si pude eliminar <3"
+        
+            except Exception:
+                print(sql)
+                print("No pude eliminar...")
+        
+        else:
+            print(f"Lo siento se perdió la comunicación con *** {Conector.motor}")
 
 
 if __name__ == "__main__":
